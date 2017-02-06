@@ -6,8 +6,11 @@ jdk:
 git:
   depth: 3
 
+before_install:
+  - chmod +x gradlew
+
 script:
-  - chmod +x gradlew && ./gradlew build --info
+  - ./gradlew build --info
 
 after_success:
   - ./gradlew jacocoTestReport coveralls jar
