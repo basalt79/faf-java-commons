@@ -8,6 +8,9 @@ git:
 
 before_install:
   - chmod +x gradlew
+  - curl -sL https://github.com/jpm4j/jpm4j.installers/raw/master/dist/biz.aQute.jpm.run.jar >jpm4j.jar
+  - java -jar jpm4j.jar -u init
+  - ~/jpm/bin/jpm install com.codacy:codacy-coverage-reporter:assembly
 
 script:
   - ./gradlew build --info
