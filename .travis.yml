@@ -7,7 +7,7 @@ script:
   - chmod +x gradlew && ./gradlew build --info
 
 after_success:
-  - ./gradlew jacocoTestReport coveralls
+  - ./gradlew jacocoTestReport coveralls jar
   - if [ "${TRAVIS_BRANCH}" == "develop" ]; then
       ~/jpm/bin/codacy-coverage-reporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml;
     fi
