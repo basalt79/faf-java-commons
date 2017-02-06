@@ -1,5 +1,6 @@
 package com.faforever.commons.map;
 
+import com.faforever.commons.lua.LuaLoader;
 import com.google.common.io.LittleEndianDataInputStream;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
@@ -21,7 +22,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.github.nocatch.NoCatch.noCatch;
 import static java.awt.Image.SCALE_SMOOTH;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static java.nio.file.Files.list;
@@ -39,29 +39,27 @@ public final class PreviewGenerator {
     throw new AssertionError("Not instantiatable");
   }
 
-  public static javafx.scene.image.Image generatePreview(Path mapFolder, int width, int height) throws IOException {
+  @SneakyThrows
+  public static javafx.scene.image.Image generatePreview(Path mapFolder, int width, int height) {
     try (Stream<Path> mapFolderStream = list(mapFolder)) {
       Optional<Path> mapPath = mapFolderStream
-          .filter(file -> file.getFileName().toString().endsWith(".scmap"))
-          .findFirst();
+        .filter(file -> file.getFileName().toString().endsWith(".scmap"))
+        .findFirst();
       if (!mapPath.isPresent()) {
         throw new RuntimeException("No map file was found in: " + mapFolder.toAbsolutePath());
       }
 
-      return noCatch(() -> {
-        MapData mapData = parseMap(mapPath.get());
-        if (mapData == null) {
-          throw new RuntimeException("mapdata is null after parseMap from: " + mapPath.get());
-        }
+      MapData mapData = parseMap(mapPath.get());
+      if (mapData == null) {
+        throw new RuntimeException("mapdata is null after parseMap from: " + mapPath.get());
+      }
 
-        BufferedImage previewImage = getDdsImage(mapData);
-        previewImage = scale(previewImage, width, height);
+      BufferedImage previewImage = getDdsImage(mapData);
+      previewImage = scale(previewImage, width, height);
 
-        addMarkers(previewImage, mapData);
+      addMarkers(previewImage, mapData);
 
-        return SwingFXUtils.toFXImage(previewImage, new WritableImage(width, height));
-      });
-
+      return SwingFXUtils.toFXImage(previewImage, new WritableImage(width, height));
     }
   }
 
@@ -86,14 +84,14 @@ public final class PreviewGenerator {
       Path lua;
       try (Stream<Path> fileStream = list(mapPath.getParent())) {
         Optional<Path> saveLua = fileStream
-            .filter(filePath -> filePath.toString().toLowerCase().endsWith("_save.lua"))
-            .findFirst();
+          .filter(filePath -> filePath.toString().toLowerCase().endsWith("_save.lua"))
+          .findFirst();
         lua = saveLua.get();
       }
       if (!Files.isRegularFile(lua)) {
         throw new RuntimeException("Path is no regular file: " + lua);
       }
-      LuaTable markers = LuaUtil.loadFile(lua).get("Scenario").get("MasterChain").get("_MASTERCHAIN_").get("Markers").checktable();
+      LuaTable markers = LuaLoader.loadFile(lua).get("Scenario").get("MasterChain").get("_MASTERCHAIN_").get("Markers").checktable();
       mapData.setMarkers(markers);
     }
     return mapData;
