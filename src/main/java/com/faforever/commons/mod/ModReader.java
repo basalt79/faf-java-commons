@@ -12,7 +12,6 @@ import org.luaj.vm2.LuaValue;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +37,14 @@ public class ModReader {
     try {
       LuaValue luaValue = LuaLoader.load(inputStream);
 
-      mod.setId(luaValue.get("uid").toString());
+      mod.setUid(luaValue.get("uid").toString());
       mod.setName(luaValue.get("name").toString());
       mod.setDescription(luaValue.get("description").toString());
       mod.setAuthor(luaValue.get("author").toString());
       mod.setVersion(new ComparableVersion(luaValue.get("version").toString()));
       mod.setSelectable(luaValue.get("selectable").toboolean());
       mod.setUiOnly(luaValue.get("ui_only").toboolean());
-      mod.setImagePath(extractIconPath(basePath, luaValue));
+      mod.setIcon(extractIconPath(luaValue));
 
       ArrayList<MountPoint> mountPoints = new ArrayList<>();
       LuaTable mountpoints = luaValue.get("mountpoints").opttable(LuaValue.tableOf());
@@ -67,26 +66,12 @@ public class ModReader {
     return mod;
   }
 
-  private static Path extractIconPath(Path basePath, LuaValue luaValue) {
+  private static String extractIconPath(LuaValue luaValue) {
     String icon = luaValue.get("icon").toString();
     if ("nil".equals(icon) || Strings.isNullOrEmpty(icon)) {
       return null;
     }
 
-    if (icon.startsWith("/")) {
-      icon = icon.substring(1);
-    }
-
-    Path iconPath = Paths.get(icon);
-    // FIXME try-catch until I know exactly what's the value that causes #228
-    try {
-      // mods/BlackOpsUnleashed/icons/yoda_icon.bmp -> icons/yoda_icon.bmp
-      iconPath = iconPath.subpath(2, iconPath.getNameCount());
-    } catch (IllegalArgumentException e) {
-      log.warn("Can't load icon for mod '{}', path: {}", basePath, iconPath);
-      return null;
-    }
-
-    return basePath.resolve(iconPath);
+    return icon;
   }
 }
