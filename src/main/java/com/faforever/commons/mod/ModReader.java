@@ -12,14 +12,23 @@ import org.luaj.vm2.LuaValue;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 @Slf4j
 public class ModReader {
 
+  /**
+   * Reads the {@code mod_info.lua} of the specified directory, throws an exception if not such file exists.
+   *
+   * @throws ModLoadException if the mod could not be read
+   */
   @SneakyThrows
-  public Mod extractModInfo(Path path) {
+  public Mod readDirectory(Path path) {
     Path modInfoLua = path.resolve("mod_info.lua");
     log.debug("Reading mod {}", path);
     if (Files.notExists(modInfoLua)) {
@@ -27,11 +36,34 @@ public class ModReader {
     }
 
     try (InputStream inputStream = Files.newInputStream(modInfoLua)) {
-      return extractModInfo(inputStream, path);
+      return readModInfo(inputStream);
     }
   }
 
-  public Mod extractModInfo(InputStream inputStream, Path basePath) {
+  /**
+   * Reads the {@code mod_info.lua} of the specified zip file, throws an exception if not such file exists.
+   *
+   * @throws ModLoadException if the mod could not be read
+   */
+  @SneakyThrows
+  public Mod readZip(Path path) {
+    try (ZipFile zipFile = new ZipFile(path.toFile())) {
+      Enumeration<? extends ZipEntry> entries = zipFile.entries();
+      while (entries.hasMoreElements()) {
+        ZipEntry zipEntry = entries.nextElement();
+        if (!"mod_info.lua".equals(Paths.get(zipEntry.getName()).getFileName().toString())) {
+          continue;
+        }
+        return readModInfo(zipFile.getInputStream(zipEntry));
+      }
+    }
+    throw new ModLoadException("Missing mod_info.lua in: " + path.toAbsolutePath());
+  }
+
+  /**
+   * Reads a {@code mod_info.lua} and returns its content.
+   */
+  public Mod readModInfo(InputStream inputStream) {
     Mod mod = new Mod();
 
     try {
@@ -49,7 +81,7 @@ public class ModReader {
       ArrayList<MountPoint> mountPoints = new ArrayList<>();
       LuaTable mountpoints = luaValue.get("mountpoints").opttable(LuaValue.tableOf());
       for (LuaValue key : mountpoints.keys()) {
-        mountPoints.add(new MountPoint(basePath.resolve(key.tojstring()), mountpoints.get(key).tojstring()));
+        mountPoints.add(new MountPoint(key.tojstring(), mountpoints.get(key).tojstring()));
       }
       mod.getMountPoints().addAll(mountPoints);
 

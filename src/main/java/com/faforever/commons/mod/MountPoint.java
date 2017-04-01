@@ -1,28 +1,20 @@
 package com.faforever.commons.mod;
 
-import java.nio.file.Path;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
 public class MountPoint {
-  private final Path directory;
+
+  /**
+   * The directory on the local file system that should be mounted into the virtual file system of the preferences.
+   */
+  private final String directory;
+
+  /**
+   * The absolute mount path (starting with {@code /}) to which the directory returned by {@link #getDirectory()} should
+   * be mounted to.
+   */
   private final String mountPath;
-
-  public MountPoint(Path directory, String mountPath) {
-    this.directory = directory;
-    this.mountPath = mountPath;
-  }
-
-  /**
-   * Returns the directory on the local file system that should be mounted into the virtual file system of the preferences.
-   */
-  public Path getDirectory() {
-    return directory;
-  }
-
-  /**
-   * Returns the absolute mount path (starting with {@code /}) to which the directory returned by
-   * {@link #getDirectory()} should be mounted to.
-   */
-  public String getMountPath() {
-    return mountPath;
-  }
 }
