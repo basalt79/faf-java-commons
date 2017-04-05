@@ -1,4 +1,4 @@
-package com.faforever.commons.zip;
+package com.faforever.commons.io;
 
 // TODO: move to shared faf code
 public interface ByteCountListener {

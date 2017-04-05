@@ -1,4 +1,4 @@
-package com.faforever.commons.zip;
+package com.faforever.commons.io;
 
 
 import org.slf4j.Logger;
