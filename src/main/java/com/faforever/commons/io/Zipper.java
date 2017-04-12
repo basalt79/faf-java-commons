@@ -77,12 +77,15 @@ public final class Zipper {
 
     Files.walkFileTree(directoryToZip, new SimpleFileVisitor<Path>() {
       public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-        if (zipContent) {
-          zipOutputStream.putNextEntry(new ZipEntry(directoryToZip.relativize(dir).toString() + "/"));
-        } else {
-          zipOutputStream.putNextEntry(new ZipEntry(directoryToZip.getParent().relativize(dir).toString() + "/"));
-        }
+        String relativized;
+        relativized = zipContent
+          ? directoryToZip.relativize(dir).toString()
+          : directoryToZip.getParent().relativize(dir).toString();
 
+        if (relativized.isEmpty()) {
+          return FileVisitResult.CONTINUE;
+        }
+        zipOutputStream.putNextEntry(new ZipEntry(relativized + "/"));
         zipOutputStream.closeEntry();
         return FileVisitResult.CONTINUE;
       }
