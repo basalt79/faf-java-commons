@@ -144,7 +144,6 @@ public class ReplayDataParser {
       int playerSource = dataStream.readUnsignedByte();
 
       armies.put(playerSource, playerData);
-      assert playerData != null;
       playerData.put("commands", new ArrayList<>());
 
       if (playerSource != 255) {
@@ -323,7 +322,7 @@ public class ReplayDataParser {
 
   private byte[] readCheckSum(LittleEndianDataInputStream dataStream) throws IOException {
     byte[] bytes = new byte[16];
-    assert dataStream.read(bytes) != 0;
+    dataStream.read(bytes);
     return bytes;
   }
 
