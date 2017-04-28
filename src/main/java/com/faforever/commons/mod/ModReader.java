@@ -36,7 +36,7 @@ public class ModReader {
     }
 
     try (InputStream inputStream = Files.newInputStream(modInfoLua)) {
-      return readModInfo(inputStream);
+      return readModInfo(inputStream, path);
     }
   }
 
@@ -54,7 +54,7 @@ public class ModReader {
         if (!"mod_info.lua".equals(Paths.get(zipEntry.getName()).getFileName().toString())) {
           continue;
         }
-        return readModInfo(zipFile.getInputStream(zipEntry));
+        return readModInfo(zipFile.getInputStream(zipEntry), path);
       }
     }
     throw new ModLoadException("Missing mod_info.lua in: " + path.toAbsolutePath());
@@ -62,8 +62,10 @@ public class ModReader {
 
   /**
    * Reads a {@code mod_info.lua} and returns its content.
+   *
+   * @param mountBaseDir the local directory to resolve mount points against. May be {@code null}.
    */
-  public Mod readModInfo(InputStream inputStream) {
+  public Mod readModInfo(InputStream inputStream, Path mountBaseDir) {
     Mod mod = new Mod();
 
     try {
@@ -81,7 +83,11 @@ public class ModReader {
       ArrayList<MountPoint> mountPoints = new ArrayList<>();
       LuaTable mountpoints = luaValue.get("mountpoints").opttable(LuaValue.tableOf());
       for (LuaValue key : mountpoints.keys()) {
-        mountPoints.add(new MountPoint(key.tojstring(), mountpoints.get(key).tojstring()));
+        mountPoints.add(new MountPoint(
+          mountBaseDir,
+          Paths.get(key.tojstring()),
+          Paths.get(mountpoints.get(key).tojstring())
+        ));
       }
       mod.getMountPoints().addAll(mountPoints);
 

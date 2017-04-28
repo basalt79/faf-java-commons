@@ -3,18 +3,26 @@ package com.faforever.commons.mod;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.nio.file.Path;
+
 @Getter
 @RequiredArgsConstructor
 public class MountPoint {
 
   /**
-   * The directory on the local file system that should be mounted into the virtual file system of the preferences.
+   * The local directory directory to resolve the {@link #file} against.
    */
-  private final String directory;
+  private final Path baseDir;
 
   /**
-   * The absolute mount path (starting with {@code /}) to which the directory returned by {@link #getDirectory()} should
+   * The ZIP file or directory on the local file system, relative to {@link #baseDir}, that should be mounted into the
+   * virtual file system of the game.
+   */
+  private final Path file;
+
+  /**
+   * The absolute mount path (starting with {@code /}) to which the directory returned by {@link #getFile()} should
    * be mounted to.
    */
-  private final String mountPath;
+  private final Path mountPath;
 }
