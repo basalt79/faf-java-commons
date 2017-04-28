@@ -18,6 +18,6 @@ public class Mod {
   private String author;
   private boolean selectable;
   private boolean uiOnly;
-  private final List<MountPoint> mountPoints = new ArrayList<>();
+  private final List<MountInfo> mountInfos = new ArrayList<>();
   private final List<String> hookDirectories = new ArrayList<>();
 }

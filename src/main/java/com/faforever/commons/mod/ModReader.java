@@ -80,16 +80,16 @@ public class ModReader {
       mod.setUiOnly(luaValue.get("ui_only").toboolean());
       mod.setIcon(extractIconPath(luaValue));
 
-      ArrayList<MountPoint> mountPoints = new ArrayList<>();
+      ArrayList<MountInfo> mountInfos = new ArrayList<>();
       LuaTable mountpoints = luaValue.get("mountpoints").opttable(LuaValue.tableOf());
       for (LuaValue key : mountpoints.keys()) {
-        mountPoints.add(new MountPoint(
+        mountInfos.add(new MountInfo(
           mountBaseDir,
           Paths.get(key.tojstring()),
-          Paths.get(mountpoints.get(key).tojstring())
+          mountpoints.get(key).tojstring()
         ));
       }
-      mod.getMountPoints().addAll(mountPoints);
+      mod.getMountInfos().addAll(mountInfos);
 
       List<String> hookDirectories = new ArrayList<>();
       LuaTable hooks = luaValue.get("hooks").opttable(LuaValue.tableOf());

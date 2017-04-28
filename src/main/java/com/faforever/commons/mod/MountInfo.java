@@ -7,7 +7,7 @@ import java.nio.file.Path;
 
 @Getter
 @RequiredArgsConstructor
-public class MountPoint {
+public class MountInfo {
 
   /**
    * The local directory directory to resolve the {@link #file} against.
@@ -21,8 +21,8 @@ public class MountPoint {
   private final Path file;
 
   /**
-   * The absolute mount path (starting with {@code /}) to which the directory returned by {@link #getFile()} should
-   * be mounted to.
+   * The absolute mount path (starting with {@code /}) within the game's virtual file system to which the directory
+   * returned by {@link #getFile()} should be mounted to.
    */
-  private final Path mountPath;
+  private final String mountPoint;
 }
