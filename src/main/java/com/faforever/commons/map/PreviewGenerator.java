@@ -2,8 +2,6 @@ package com.faforever.commons.map;
 
 import com.faforever.commons.lua.LuaLoader;
 import com.google.common.io.LittleEndianDataInputStream;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.WritableImage;
 import lombok.SneakyThrows;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
@@ -40,27 +38,25 @@ public final class PreviewGenerator {
   }
 
   @SneakyThrows
-  public static javafx.scene.image.Image generatePreview(Path mapFolder, int width, int height) {
+  public static BufferedImage generatePreview(Path mapFolder, int width, int height) throws IOException {
+    BufferedImage previewImage;
     try (Stream<Path> mapFolderStream = list(mapFolder)) {
-      Optional<Path> mapPath = mapFolderStream
+      Path mapPath = mapFolderStream
         .filter(file -> file.getFileName().toString().endsWith(".scmap"))
-        .findFirst();
-      if (!mapPath.isPresent()) {
-        throw new RuntimeException("No map file was found in: " + mapFolder.toAbsolutePath());
-      }
+        .findFirst()
+        .orElseThrow(() -> new RuntimeException("No map file was found in: " + mapFolder.toAbsolutePath()));
 
-      MapData mapData = parseMap(mapPath.get());
+      MapData mapData = parseMap(mapPath);
       if (mapData == null) {
-        throw new RuntimeException("mapdata is null after parseMap from: " + mapPath.get());
+        throw new RuntimeException("mapdata is null after parseMap from: " + mapPath);
       }
 
-      BufferedImage previewImage = getDdsImage(mapData);
+      previewImage = getDdsImage(mapData);
       previewImage = scale(previewImage, width, height);
 
       addMarkers(previewImage, mapData);
-
-      return SwingFXUtils.toFXImage(previewImage, new WritableImage(width, height));
     }
+    return previewImage;
   }
 
   @SneakyThrows
