@@ -79,8 +79,8 @@ public final class Zipper {
       public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
         String relativized;
         relativized = zipContent
-          ? directoryToZip.relativize(dir).toString()
-          : directoryToZip.getParent().relativize(dir).toString();
+          ? directoryToZip.relativize(dir).toString().replace(PATH_SEPARATOR, '/')
+          : directoryToZip.getParent().relativize(dir).toString().replace(PATH_SEPARATOR, '/');
 
         if (relativized.isEmpty()) {
           return FileVisitResult.CONTINUE;
