@@ -1,2 +1,2 @@
-rootProject.name = 'faf-commons'
-
+include ':faf-commons-api'
+include ':faf-commons-data'
