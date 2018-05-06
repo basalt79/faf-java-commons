@@ -7,12 +7,17 @@ import lombok.Data;
 @Data
 @Type("tutorial")
 public class Tutorial extends AbstractEntity {
+  private String descriptionKey;
   private String description;
+  private String titleKey;
   private String title;
-  private String category;
-  private String thumbnailUrl;
+  @Relationship("category")
+  private TutorialCategory category;
+  private String image;
+  private String imageUrl;
   private int ordinal;
   private boolean launchable;
+  private String technicalName;
   @Relationship("mapVersion")
   private MapVersion mapVersion;
 }
