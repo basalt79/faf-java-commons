@@ -9,7 +9,7 @@ import lombok.Data;
 @Type("tutorial")
 public class Message {
   @Id
-  private int id;
+  private String id;
   private String key;
   private String language;
   private String region;
