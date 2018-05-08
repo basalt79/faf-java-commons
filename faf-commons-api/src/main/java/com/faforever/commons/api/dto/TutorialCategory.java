@@ -11,7 +11,7 @@ import java.util.List;
 @Type("tutorialCategory")
 public class TutorialCategory {
   @Id
-  private int id;
+  private String id;
   private String categoryKey;
   private String category;
   @Relationship("tutorials")
