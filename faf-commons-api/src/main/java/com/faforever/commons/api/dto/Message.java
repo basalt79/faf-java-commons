@@ -6,7 +6,7 @@ import com.github.jasminb.jsonapi.annotations.Type;
 import lombok.Data;
 
 @Data
-@Type("tutorial")
+@Type("message")
 public class Message {
   @Id
   private String id;
