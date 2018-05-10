@@ -1,5 +1,6 @@
 package com.faforever.commons.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
@@ -14,6 +15,8 @@ public class TutorialCategory {
   private String id;
   private String categoryKey;
   private String category;
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   @Relationship("tutorials")
   private List<Tutorial> tutorials;
+
 }
