@@ -11,8 +11,16 @@ import java.time.OffsetDateTime;
 @Setter
 @EqualsAndHashCode(of = "id")
 public abstract class AbstractEntity {
-    @Id
-    protected String id;
-    protected OffsetDateTime createTime;
-    protected OffsetDateTime updateTime;
+  @Id
+  protected String id;
+  protected OffsetDateTime createTime;
+  protected OffsetDateTime updateTime;
+
+  /**
+   * Supplement method for @EqualsAndHashCode
+   * overriding the default lombok implementation
+   */
+  protected boolean canEqual(Object other) {
+    return other instanceof AbstractEntity && this.getClass() == other.getClass();
+  }
 }
