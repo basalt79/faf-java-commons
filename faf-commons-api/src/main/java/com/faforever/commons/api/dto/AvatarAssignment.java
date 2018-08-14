@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 public class AvatarAssignment extends AbstractEntity {
-    private boolean selected;
+    private Boolean selected;
     private OffsetDateTime expiresAt;
     @Relationship("player")
     @JsonIgnore

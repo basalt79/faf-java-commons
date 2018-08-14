@@ -1,5 +1,6 @@
 package com.faforever.commons.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -38,6 +40,14 @@ public class Player extends AbstractEntity {
     @Relationship("avatarAssignments")
     @JsonIgnore
     private List<AvatarAssignment> avatarAssignments;
+
+    @JsonBackReference
+    @Relationship("reporterOnModerationReports")
+    private Set<ModerationReport> reporterOnModerationReports;
+
+    @JsonBackReference
+    @Relationship("reportedOnModerationReports")
+    private Set<ModerationReport> reportedOnModerationReports;
 
     @Override
     public String toString() {
