@@ -1,6 +1,7 @@
 package com.faforever.commons.api.dto;
 
 import com.faforever.commons.api.elide.ElideEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ public class DomainBlacklist implements ElideEntity {
   String domain;
 
   @Override
+  @JsonIgnore
   public String getId() {
     return domain;
   }

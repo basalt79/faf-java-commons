@@ -1,7 +1,6 @@
 package com.faforever.commons.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import lombok.Getter;
@@ -26,8 +25,8 @@ public class BanInfo extends AbstractEntity {
     @Relationship("banRevokeData")
     @JsonIgnore
     private BanRevokeData banRevokeData;
-    @JsonManagedReference
     @Relationship("moderationReport")
+    @JsonIgnore
     private ModerationReport moderationReport;
 
     @JsonIgnore

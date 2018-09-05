@@ -1,15 +1,12 @@
 package com.faforever.commons.api.dto;
 
-import java.util.Collection;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Type("moderationReport")
 @Getter
@@ -20,17 +17,20 @@ public class ModerationReport extends AbstractEntity {
   private String gameIncidentTimecode;
   private String moderatorNotice;
   private String moderatorPrivateNote;
-  @JsonBackReference
+
   @Relationship("bans")
-  private Collection<BanInfo> bans;
-  @JsonManagedReference
+  @JsonIgnore
+  private Set<BanInfo> bans;
   @Relationship("reporter")
+  @JsonIgnore
   private Player reporter;
   @Relationship("game")
+  @JsonIgnore
   private Game game;
   @Relationship("lastModerator")
+  @JsonIgnore
   private Player lastModerator;
-  @JsonManagedReference
   @Relationship("reportedUsers")
+  @JsonIgnore
   private Set<Player> reportedUsers;
 }
