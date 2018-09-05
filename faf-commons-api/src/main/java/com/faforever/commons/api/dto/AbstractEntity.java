@@ -1,5 +1,6 @@
 package com.faforever.commons.api.dto;
 
+import com.faforever.commons.api.elide.ElideEntity;
 import com.github.jasminb.jsonapi.annotations.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-public abstract class AbstractEntity {
+public abstract class AbstractEntity implements ElideEntity {
   @Id
   protected String id;
   protected OffsetDateTime createTime;

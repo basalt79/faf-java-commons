@@ -1,5 +1,6 @@
 package com.faforever.commons.api.dto;
 
+import com.faforever.commons.api.elide.ElideEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Data
 @Type("tutorialCategory")
-public class TutorialCategory {
+public class TutorialCategory implements ElideEntity {
   @Id
   private String id;
   private String categoryKey;

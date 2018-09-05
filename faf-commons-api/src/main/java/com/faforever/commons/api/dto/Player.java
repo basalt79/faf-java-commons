@@ -45,10 +45,6 @@ public class Player extends AbstractEntity {
     @Relationship("reporterOnModerationReports")
     private Set<ModerationReport> reporterOnModerationReports;
 
-    @JsonBackReference
-    @Relationship("reportedOnModerationReports")
-    private Set<ModerationReport> reportedOnModerationReports;
-
     @Override
     public String toString() {
         return String.format("%s [id %s]", login, id);

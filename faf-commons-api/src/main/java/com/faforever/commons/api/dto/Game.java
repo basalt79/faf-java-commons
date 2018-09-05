@@ -1,5 +1,6 @@
 package com.faforever.commons.api.dto;
 
+import com.faforever.commons.api.elide.ElideEntity;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
@@ -14,7 +15,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode(of = "id")
 @Type("game")
-public class Game {
+public class Game implements ElideEntity {
     @Id
     private String id;
     private String name;
