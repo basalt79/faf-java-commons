@@ -19,6 +19,7 @@ public class VotingQuestion extends AbstractEntity {
   private String questionKey;
   private String descriptionKey;
   private Integer maxAnswers;
+  private Integer ordinal;
   private Boolean alternativeQuestion;
   @Relationship("votingSubject")
   private VotingSubject votingSubject;
