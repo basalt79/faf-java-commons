@@ -2,7 +2,6 @@ package com.faforever.commons.api.dto;
 
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +9,6 @@ import java.net.URL;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
 @Type("modVersion")
 public class ModVersion extends AbstractEntity {
     private String uid;
