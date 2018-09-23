@@ -7,6 +7,7 @@ import com.github.jasminb.jsonapi.annotations.Type;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,8 @@ public class Player extends AbstractEntity {
     private String steamId;
     @RestrictedVisibility("IsModerator")
     private String recentIpAddress;
+    @RestrictedVisibility("IsModerator")
+    private OffsetDateTime lastLogin;
 
     @Relationship("globalRating")
     private GlobalRating globalRating;
