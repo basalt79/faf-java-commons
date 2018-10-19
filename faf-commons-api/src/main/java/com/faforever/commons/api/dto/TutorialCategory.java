@@ -6,11 +6,13 @@ import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
 @Data
 @Type("tutorialCategory")
+@ToString(exclude={"tutorials"})
 public class TutorialCategory implements ElideEntity {
   @Id
   private String id;
